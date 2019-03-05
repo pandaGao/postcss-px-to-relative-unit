@@ -1,4 +1,6 @@
 # postcss-px-to-relative-unit
+[![npm version](https://badge.fury.io/js/postcss-px-to-relative-unit.svg)](https://badge.fury.io/js/postcss-px-to-relative-unit)
+[![Build Status](https://travis-ci.org/pandaGao/postcss-px-to-relative-unit.svg?branch=master)](https://travis-ci.org/pandaGao/postcss-px-to-relative-unit)
 
 A Postcss plugin to convert px to relative length units (vw / rem)
 
