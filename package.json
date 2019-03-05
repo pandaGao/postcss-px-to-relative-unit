@@ -1,0 +1,28 @@
+{
+  "name": "postcss-px-to-relative-unit",
+  "version": "1.0.0",
+  "description": "A postcss plugin to convert px to relative length units (vw / rem)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ./test --coverage"
+  },
+  "keywords": [
+    "postcss",
+    "px2rem",
+    "px2vw",
+    "rem",
+    "viewport"
+  ],
+  "author": "RyanGao <me@pandagao.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.1.0"
+  },
+  "dependencies": {
+    "postcss": "^7.0.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pandaGao/postcss-px-to-relative-unit"
+  }
+}
