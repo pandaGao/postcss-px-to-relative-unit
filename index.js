@@ -1,7 +1,6 @@
 const postcss = require('postcss')
 
-const pxUnitReg = /[\d.]+px/g
-const pxValueReg = /[\d.]+/
+const pxUnitReg = /"[^"]+"|'[^']+'|url\([^\)]+\)|(\d*\.?\d+)px/g
 
 function toFixed (number, precision) {
   let multiplier = Math.pow(10, precision + 1)
@@ -44,7 +43,7 @@ module.exports = postcss.plugin('postcss-px-to-relative-unit', function (options
     excludeSelectors: [],
     excludeProperties: []
   }, options)
-  return function (root, result) {
+  return function (root) {
     if (isExcludeFile(root.source.input.file, options.excludeFiles)) {
       return
     }
@@ -58,26 +57,22 @@ module.exports = postcss.plugin('postcss-px-to-relative-unit', function (options
         }
         let remValue = decl.value
         let vwValue = decl.value
-        let pxValues = decl.value.match(pxUnitReg)
-        if (!pxValues) { return }
         let hasChange = false
-        pxValues
-          .map(pxValue => {
-            let [ px ] = pxValue.match(pxValueReg)
-            return {
-              value: px * 1,
-              origin: pxValue
-            }
-          })
-          .filter(px => !isNaN(px.value) && px.value > options.ignoreThreshold)
-          .sort((a, b) => b.value - a.value)
-          .forEach(px => {
-            hasChange = true
-            let remTargetValue = toFixed(px.value / options.htmlFontSize, options.unitPrecision)
-            let vwTargetValue = toFixed(px.value / options.viewportWidth * 100, options.unitPrecision)
-            remValue = remValue.replace(px.origin, `${remTargetValue}rem`)
-            vwValue = vwValue.replace(px.origin, `${vwTargetValue}vw`)
-          })
+        remValue = remValue.replace(pxUnitReg, (match, pxValue) => {
+          if (!pxValue) { return match }
+          let pixelValue = parseFloat(pxValue)
+          if (pixelValue <= options.ignoreThreshold) { return match }
+          let remTargetValue = toFixed(pixelValue / options.htmlFontSize, options.unitPrecision)
+          return `${remTargetValue}rem`
+        })
+        vwValue = vwValue.replace(pxUnitReg, (match, pxValue) => {
+          if (!pxValue) { return match }
+          let pixelValue = parseFloat(pxValue)
+          if (pixelValue <= options.ignoreThreshold) { return match }
+          hasChange = true
+          let vwTargetValue = toFixed(pixelValue / options.viewportWidth * 100, options.unitPrecision)
+          return `${vwTargetValue}vw`
+        })
         if (!hasChange) { return }
         if (options.targetUnit === 'vw') {
           decl.value = vwValue

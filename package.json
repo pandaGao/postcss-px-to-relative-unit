@@ -4,6 +4,7 @@
   "description": "A postcss plugin to convert px to relative length units (vw / rem)",
   "main": "index.js",
   "scripts": {
+    "dev": "node ./test/dev.js",
     "test": "jest ./test --coverage"
   },
   "keywords": [

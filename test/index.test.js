@@ -46,6 +46,12 @@ describe('Convert', () => {
       ignoreThreshold: 5
     })
   })
+
+  test('ignore pattern', () => {
+    let inputFile = path.resolve(__dirname, './input/ignore-pattern.css')
+    let outputFile = path.resolve(__dirname, './input/ignore-pattern.css')
+    return runCase(inputFile, outputFile)
+  })
 })
 
 describe('Exclude rules', () => {

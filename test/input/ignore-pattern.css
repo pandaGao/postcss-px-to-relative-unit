@@ -1,0 +1,5 @@
+.test {
+  content: "1px";
+  content: '1px';
+  background-image: url('test1px');
+}
